@@ -5,4 +5,9 @@ import java.util.HashMap;
 
 public class Actor extends AbstractActor {
     private Map<String, Float> storage = new HashMap<>();
+
+    @Override
+    public Receive createReceive() {
+        
+    }
 }
