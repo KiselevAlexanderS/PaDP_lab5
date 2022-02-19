@@ -58,7 +58,7 @@ public class AkkaApp {
                 ConnectHttp.toHost("localhost", 8080),
                 materia
         );
-        System.out.println("Server online at http://localhost:8080/\nPress RETURN to stop..");
+        System.out.println("Server started at http://localhost:8080/\nPress RETURN to stop..");
         System.in.read();
         bind.thenCompose(ServerBinding::unbind)
                 .thenAccept(unbound -> system.terminate());
