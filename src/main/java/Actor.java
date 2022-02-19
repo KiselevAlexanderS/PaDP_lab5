@@ -8,6 +8,6 @@ public class Actor extends AbstractActor {
 
     @Override
     public Receive createReceive() {
-        
+
     }
 }
