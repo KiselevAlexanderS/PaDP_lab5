@@ -25,31 +25,16 @@ public class AkkaApp {
 
         final Http http = Http.get(system);
         final ActorMaterializer materia = ActorMaterializer.create(system);
-        final Flow<HttpRequest, HttpResponse, NotUsed> routeFlow = Flow.of(HttpRequest.class).map(request -> {
-            String url = request.getUri().query().get("testUrl").orElse("http://bmstu.ru");
-            Integer count = Integer.parseInt(request.getUri().query().get("count").orElse("1"));
-            return new GetResult(url,count);
-            }).mapAsync(4, param ->
-                return Source.from(Collections.singletonList(param))
-                        .toMat(testSink(),Keep.right()).run(materializer)
-                        .thenCompose(time -> CompletableFuture.completedFuture(
-                                new ResponseResult(false,param.getUrl(),time/param.getCount())));
-            }))
-                    .map(response -> {
-                if (!response.isEmpty()){
-                    StoreResult storeResult = new StoreResult(response.getUrl(),response.getTime());
-                    storeRef.tell(storeResult,ActorRef.noSender());
-                }
-                return HttpResponse.create().withStatus(200).withEntity(response.getTime() + "ms");
-            });
-        final CompletionStage<ServerBinding> bind = http.bindAndHandle(
-                routeFlow,
-                ConnectHttp.toHost("localhost", 8080),
-                materia
-        );
-        System.out.println("Server online at http://localhost:8080/\nPress RETURN to stop...");
-        System.in.read();
-        bind.thenCompose(ServerBinding::unbind)
-                .thenAccept(unbound -> system.terminate());
+        final Flow<HttpRequest, HttpResponse, NotUsed> routeFlow = Flow.of(HttpRequest.class)
+                .map(request -> {
+                    String url = request.getUri().query().get("testUrl").orElse("http://bmstu.ru");
+                    Integer count = Integer.parseInt(request.getUri().query().get("count").orElse("1"));
+                    return new GetResult(url,count);
+                }).mapAsync(4, param ->
+                    Patterns.ask(storeRef, param, Duration.ofMillis(4000))
+                            .thenCompose(msg -> {
+                                ResponseResult responseResult = (ResponseResult) msg;
+                                if (responseResult.isEmpty())
+                                    return CompletableFuture.completedFuture(responseResult);
     }
 }
