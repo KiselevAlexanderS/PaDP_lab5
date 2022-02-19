@@ -4,6 +4,8 @@ public class ResponseResult {
     private Long time;
 
     ResponseResult(boolean isEmpty, String url, Long time) {
-        
+        this.isEmpty = isEmpty;
+        this.url = url;
+        this.time = time;
     }
 }
