@@ -20,7 +20,7 @@ import java.util.concurrent.CompletionStage;
 
 public class AkkaApp {
     public static void main(String[] args) throws IOException {
-        ActorSystem system = ActorSystem.create("routes");
+        ActorSystem system = ActorSystem.create("AkkaApp");
         ActorRef storeRef = system.actorOf(Props.create(Actor.class))
 
         final Http http = Http.get(system);
