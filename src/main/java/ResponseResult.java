@@ -8,4 +8,16 @@ public class ResponseResult {
         this.url = url;
         this.time = time;
     }
+
+    public boolean isEmpty() {
+        return isEmpty;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public Long getTime() {
+        return time;
+    }
 }
