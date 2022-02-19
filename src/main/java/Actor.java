@@ -1,2 +1,5 @@
-package PACKAGE_NAME;public class Actor {
+import akka.actor.AbstractActor;
+
+public class Actor extends AbstractActor {
+    private Map<>
 }
