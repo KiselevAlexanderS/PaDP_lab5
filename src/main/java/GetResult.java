@@ -2,7 +2,7 @@ public class GetResult {
     private String url;
     private int count;
 
-    public GetResult(String url, int count) {
+    GetResult(String url, int count) {
         this.count = count;
         this.url = url;
     }
