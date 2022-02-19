@@ -6,4 +6,12 @@ public class StoreResult {
         this.time = time;
         this.url = url;
     }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public long getTime() {
+        return time;
+    }
 }
